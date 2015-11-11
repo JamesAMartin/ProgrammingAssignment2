@@ -9,9 +9,6 @@
 ##	a matrix, as well as the caching and recall of the matrix inverse.
 makeCacheMatrix <- function( x = matrix() )
 {
-	#	Storage for the cached matrix (Original Matrix)
-	om <- NULL
-	
 	#	Storage for the inverse matrix (Inverse Matrix)
 	im <- NULL
 	
@@ -21,7 +18,7 @@ makeCacheMatrix <- function( x = matrix() )
 	{
 		#	Assign passed in matrix to cache storage for the original matrix
 		#	in the parent environment.
-		om <<- y
+		x <<- y
 		
 		#	Reset the cache storage for the inverse matrix in the parent
 		#	environment to NULL since we just received a new matrix.
@@ -31,7 +28,7 @@ makeCacheMatrix <- function( x = matrix() )
 	#	Return the cached original matrix (non-inverse)
 	get <- function()
 	{
-		om
+		x
 	}
 	
 	#	Store the passed in matrix in cache as the inverse matrix
@@ -77,10 +74,10 @@ cacheSolve <- function(x, ...)
 	}
 	
 	#	PUll the original, non-inverse matrix
-	om <- im$get()
+	om <- x$get()
 	
 	#	Invert the matrix
-	im <- solv( om )
+	im <- solve( om, ... )
 	
 	#	Store the locally calculated inverse matrix back into the cache object
 	x$setinverse( im )

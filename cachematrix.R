@@ -35,9 +35,9 @@ makeCacheMatrix <- function( x = matrix() )
 	}
 	
 	#	Store the passed in matrix in cache as the inverse matrix
-	setinverse <- function( inverseMatrix )
+	setinverse <- function( m )
 	{
-		im <<- inverseMatrix
+		im <<- m
 	}
 	
 	#	Return the inverse matrix stored in cache.  Since the cache
@@ -65,5 +65,26 @@ makeCacheMatrix <- function( x = matrix() )
 ##	matrix in the same passed in object for future reference.
 cacheSolve <- function(x, ...)
 {
-        ## Return a matrix that is the inverse of 'x'
+	#	Check to see if the matrix has already been inverted
+	im <- x$getinverse()
+	
+	#	If the matrix has been inverted, notify we are pulling from cache
+	#	and return the inverted matrix.
+	if( !is.null( im ) )
+	{
+		message( "Getting inverse matrix from cache" )
+		return( im )
+	}
+	
+	#	PUll the original, non-inverse matrix
+	om <- im$get()
+	
+	#	Invert the matrix
+	im <- solv( om )
+	
+	#	Store the locally calculated inverse matrix back into the cache object
+	x$setinverse( im )
+	
+	#	Return the inverse matrix
+	im
 }
